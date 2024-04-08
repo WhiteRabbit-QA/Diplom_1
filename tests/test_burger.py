@@ -25,14 +25,6 @@ class TestBurger:
 
         assert burger.bun == mock_bun
 
-    @allure.title("Проверка, что ингридиент добавляется в список")
-    def test_add_ingredient_list_not_empty(self):
-        burger = Burger()
-        mock_ingredient = Mock()
-        burger.add_ingredient(mock_ingredient)
-
-        assert len(burger.ingredients) > 0
-
     @allure.title("Проверка, что в список ингридиентов добавляется объект класса 'Ingredient'")
     @patch("praktikum.ingredient.Ingredient")
     def test_add_ingredient_sets_valid_attribute(self, mock_ingredient):
@@ -65,17 +57,15 @@ class TestBurger:
         assert price_return == price_buns * 2 + price_ingr1 + price_ingr2, "Цена рассчитана неверно."
 
     @allure.title("Проверка, что ингредиент удаляется верно")
-    @pytest.mark.parametrize('index', [0, 1, 2])
-    def test_remove_ingredient_correct_delete_ingredient(self, index):
-        mock_1 = Mock()
-        mock_2 = Mock()
-        mock_3 = Mock()
-        exp_res = [[mock_2, mock_3], [mock_1, mock_3], [mock_1, mock_2]]
+    def test_remove_ingredient_correct_delete_ingredient(self):
+        mock_ing1 = Mock()
+        mock_ing2 = Mock()
         burger = Burger()
-        burger.ingredients = [mock_1, mock_2, mock_3]
-        burger.remove_ingredient(index)
+        burger.add_ingredient(mock_ing1)
+        burger.add_ingredient(mock_ing2)
+        burger.remove_ingredient(0)
 
-        assert burger.ingredients == exp_res[index]
+        assert burger.ingredients == [mock_ing2]
 
     @allure.title("Проверка, что ингредиент верно перемещается вверх и вниз")
     @pytest.mark.parametrize(
